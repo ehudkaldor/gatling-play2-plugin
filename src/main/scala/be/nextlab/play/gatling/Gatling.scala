@@ -1,20 +1,22 @@
-package gatling
-
-import java.io.File
-import play.api.Play._
-import play.Plugin
-import play.api.{Application, Play}
-import com.excilys.ebi.gatling.core.config.GatlingConfiguration
-import scalax.io
-import io.Codec
-import scalax.file.Path
+package be.nextlab.play.gatling
 
 /**
  *
  * User: noootsab
- * Date: 12/03/12
- * Time: 22:24
+ * Date: 11/04/12
+ * Time: 23:24
  */
+import java.io.File
+
+import play.api._
+import play.api.Play._
+import play.Plugin
+
+import scalax.io
+import io.Codec
+import scalax.file.Path
+
+import com.excilys.ebi.gatling.core.config.GatlingConfiguration
 
 class Gatling(app: Application) extends Plugin {
 
@@ -26,10 +28,9 @@ class Gatling(app: Application) extends Plugin {
 
 
     val gatlingPath: String = "target/gatling/"
+    app.getFile(gatlingPath).mkdirs()
 
-    Play.getFile(gatlingPath).mkdirs()
-
-    val gatlingFile = Path(Play.getFile(gatlingPath + "gatling.conf"))
+    val gatlingFile = Path(app.getFile(gatlingPath + "gatling.conf"))
     if (!gatlingFile.exists) {
       gatlingFile.createFile(true, false)
       gatlingFile.write(
@@ -65,10 +66,10 @@ class Gatling(app: Application) extends Plugin {
     }
 
 
-    def mkDirsIfNotExists(dir:String):File = Play.getExistingFile(gatlingPath + dir) match {
+    def mkDirsIfNotExists(dir:String):File = app.getExistingFile(gatlingPath + dir) match {
       case Some(x) => x
       case None => {
-        val d = Play.getFile(gatlingPath + dir)
+        val d = app.getFile(gatlingPath + dir)
         d.mkdirs()
         d
       }

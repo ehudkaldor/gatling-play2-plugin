@@ -12,8 +12,8 @@ object SampleSimulations {
   
   def simulations(baseUrl:String):Seq[GSimulation] = Seq(
 
-    new SimpleSimulation(baseUrl, controllers.routes.Application.index().url),
-    new SimpleSimulation(baseUrl, controllers.routes.Application.index2().url)
+    //what might be done in play app : new SimpleSimulation(baseUrl, controllers.routes.Application.index().url),
+    new SimpleSimulation(baseUrl, "")
 
   )
   

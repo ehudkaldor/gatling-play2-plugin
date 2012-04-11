@@ -1,44 +1,49 @@
 import sbt._
 import Keys._
-import PlayProject._
 
-object ApplicationBuild extends Build {
+object MinimalBuild extends Build {
 
   val appName = "gatling-play2-plugin"
-  val appVersion = "1.0"
+  val buildVersion =  "1.0-SNAPSHOT"
+
+  lazy val typesafeSnapshot = "Typesafe Snapshots Repository" at "http://repo.typesafe.com/typesafe/snapshots/"
+  lazy val typesafe = "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
   /* OFFICIAL GATLING REPO */
   val gatlingReleasesRepo = "Gatling Releases Repo" at "http://repository.excilys.com/content/repositories/releases"
   val gatling3PartyRepo = "Gatling Third-Party Repo" at "http://repository.excilys.com/content/repositories/thirdparty"
 
 
-  /* LOCAL MAVEN REPO for My Forked Gatling */
-  val mavenLocal = "Local Maven Repository" at "file:///"+ Path.userHome+"/.m2/repository"
-
-
   /* GATLING DEPS */
-  val gatlingVersionNumber = "1.1"                    //FUTURE version that should have Akka 2.0 support !
-  val gatlingSnapshotVersionNumber = "1.1.0-SNAPSHOT" //My version of the 1.1.0-SNAPSHOT that has rough Akka 2.0 support
-  val gatlingApp = "com.excilys.ebi.gatling" % "gatling-app" % gatlingSnapshotVersionNumber
-  val gatlingRecorder = "com.excilys.ebi.gatling" % "gatling-recorder" % gatlingSnapshotVersionNumber
-  val gatlingCharts = "com.excilys.ebi.gatling" % "gatling-charts" % gatlingSnapshotVersionNumber
-  val gatlingHighcharts = "com.excilys.ebi.gatling.highcharts" % "gatling-charts-highcharts" % gatlingSnapshotVersionNumber
+  val gatlingVersionNumber = "1.1.2"
+  val gatlingApp = "com.excilys.ebi.gatling" % "gatling-app" % gatlingVersionNumber
+  val gatlingRecorder = "com.excilys.ebi.gatling" % "gatling-recorder" % gatlingVersionNumber
+  val gatlingCharts = "com.excilys.ebi.gatling" % "gatling-charts" % gatlingVersionNumber
+  val gatlingHighcharts = "com.excilys.ebi.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersionNumber
 
 
-  val appDependencies = Seq(
-    gatlingApp,
-    gatlingRecorder,
-    gatlingCharts,
-    gatlingHighcharts
+  val specs2 = "org.specs2" %% "specs2" % "1.8.2" % "test" withSources
+
+  val libDependencies = Seq(
+    "play" %% "play" % "2.0",
+
+     gatlingApp,
+     gatlingRecorder,
+     gatlingCharts,
+     gatlingHighcharts,
+
+    specs2,
+
+    "play" %% "play-test" % "2.0"
   )
 
-  val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
-    resolvers ++= Seq(
-      gatlingReleasesRepo,
-      gatling3PartyRepo,
 
-      mavenLocal
-    )
+
+  lazy val root = Project(id = appName, base = file("."), settings = Project.defaultSettings).settings(
+    version := buildVersion,
+    organization := "be.nextlab",
+    resolvers ++= Seq(typesafe, typesafeSnapshot, gatlingReleasesRepo, gatling3PartyRepo),
+    javacOptions += "-Xlint:unchecked",
+    libraryDependencies ++= libDependencies
   )
-
 }
