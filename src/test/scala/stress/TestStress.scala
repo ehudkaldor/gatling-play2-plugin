@@ -19,7 +19,7 @@ class TestStress extends Specification {
   "stress test the server" in {
     val baseUrl = "http://localhost:3333"
     running(TestServer(3333, FakeApplication(
-    additionalPlugins = Seq("gatling.Gatling")
+    additionalPlugins = Seq("be.nextlab.play.gatling.Gatling")
     ))) {
 
       SampleSimulations.simulations(baseUrl) foreach Util.gatling

@@ -18,7 +18,7 @@ import scalax.file.Path
 
 import com.excilys.ebi.gatling.core.config.GatlingConfiguration
 
-class Gatling(app: Application) extends Plugin {
+class GatlingPlugin(app: Application) extends Plugin {
 
 
   override def enabled() = isTest(app)
