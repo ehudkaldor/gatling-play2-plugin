@@ -10,7 +10,6 @@ import org.specs2.execute.Result
 import play.api.test.Helpers._
 import play.api.test.{TestServer, FakeApplication}
 import com.excilys.ebi.gatling.core.scenario.configuration.Simulation
-import com.excilys.ebi.gatling.app.{Gatling =>EGatling}
 
 /**
  *
@@ -20,26 +19,6 @@ import com.excilys.ebi.gatling.app.{Gatling =>EGatling}
  */
 
 object Util {
-
-  def generateReports(runUuid: String) {
-    println("Generating reports...")
-    val start = System.currentTimeMillis
-    if (ReportsGenerator.generateFor(runUuid)) {
-      println("Reports generated in " + (System.currentTimeMillis - start) / 1000 + "s.")
-      println("Please open the following file : " + activeSessionsFile(runUuid))
-    } else {
-      println("Reports weren't generated")
-    }
-  }
-
-  def gatling(s: Simulation) {
-    println("Creating run record")
-    val runInfo = new RunRecord(now, "run-test", "test" + System.currentTimeMillis)
-    println("Run record created > run scenario")
-    new Runner(runInfo, s()).run
-    println("scenarion ran > generate reports")
-    generateReports(runInfo.runUuid)
-  }
 
   lazy val fakeApplication: FakeApplication = FakeApplication(additionalPlugins = Seq("be.nextlab.play.gatling.GatlingPlugin"))
   lazy val plugin: GatlingPlugin = fakeApplication.plugin[GatlingPlugin].get
@@ -51,6 +30,29 @@ object Util {
     def around[T <% Result](t: => T) = {
       gatling(s)
       t
+    }
+
+    def gatling(s: Simulation) {
+      println("Creating run record")
+      val runInfo = new RunRecord(now, "run-test", "test" + System.currentTimeMillis)
+      println("Run record created > run scenario")
+      val runner: Runner = new Runner(runInfo, s())
+      runner.run
+
+      println("scenarion ran > generate reports")
+      generateReports(runInfo.runUuid)
+      println("reports generated")
+    }
+
+    def generateReports(runUuid: String) {
+      println("Generating reports...")
+      val start = System.currentTimeMillis
+      if (ReportsGenerator.generateFor(runUuid)) {
+        println("Reports generated in " + (System.currentTimeMillis - start) / 1000 + "s.")
+        println("Please open the following file : " + activeSessionsFile(runUuid))
+      } else {
+        println("Reports weren't generated")
+      }
     }
   }
 
