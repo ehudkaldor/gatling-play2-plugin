@@ -44,7 +44,7 @@ class GatlingPlugin(app: Application) extends Plugin {
         | 	encoding = "utf-8"              # encoding for every file manipulation made in gatling
         |
         | 	simulation {
-        | 		timeout = 10                  # max duration of a simulation in seconds
+        | 		timeout = 86400               # max duration of a simulation in seconds
         | 		scalaPackage = ""
         | 	}
         | 	charting {

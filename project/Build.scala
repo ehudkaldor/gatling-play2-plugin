@@ -18,9 +18,10 @@ object MinimalBuild extends Build {
   val gatlingVersionNumber = "1.1.3"
   val gatlingApp = "com.excilys.ebi.gatling" % "gatling-app" % gatlingVersionNumber withSources
   val gatlingCore = "com.excilys.ebi.gatling" % "gatling-core" % gatlingVersionNumber withSources
-  val gatlingRecorder = "com.excilys.ebi.gatling" % "gatling-recorder" % gatlingVersionNumber
-  val gatlingCharts = "com.excilys.ebi.gatling" % "gatling-charts" % gatlingVersionNumber
-  val gatlingHighcharts = "com.excilys.ebi.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersionNumber
+  val gatlingHttp = "com.excilys.ebi.gatling" % "gatling-http" % gatlingVersionNumber withSources
+  val gatlingRecorder = "com.excilys.ebi.gatling" % "gatling-recorder" % gatlingVersionNumber withSources
+  val gatlingCharts = "com.excilys.ebi.gatling" % "gatling-charts" % gatlingVersionNumber withSources
+  val gatlingHighcharts = "com.excilys.ebi.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersionNumber withSources
 
 
   val specs2 = "org.specs2" %% "specs2" % "1.8.2" withSources
@@ -28,8 +29,9 @@ object MinimalBuild extends Build {
   val libDependencies = Seq(
     "play" %% "play" % "2.0",
 
-     gatlingCore,
      gatlingApp,
+     gatlingCore,
+     gatlingHttp,
      gatlingRecorder,
      gatlingCharts,
      gatlingHighcharts,
