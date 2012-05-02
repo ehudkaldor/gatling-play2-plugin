@@ -17,7 +17,7 @@ object MinimalBuild extends Build {
   val localMavenRepo = "Local Maven Repository" at file(Path.userHome.absolutePath+"/.m2/repository").toURI.toURL.toString
 
   /* GATLING DEPS */
-  val gatlingVersionNumber = "1.1.4-SNAPSHOT"
+  val gatlingVersionNumber = "1.1.4"
   val gatlingApp = "com.excilys.ebi.gatling" % "gatling-app" % gatlingVersionNumber //withSources
   val gatlingCore = "com.excilys.ebi.gatling" % "gatling-core" % gatlingVersionNumber //withSources
   val gatlingHttp = "com.excilys.ebi.gatling" % "gatling-http" % gatlingVersionNumber //withSources
